@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import springUser.dao.UserDAOImpl;
+import springUser.dao.UserDAO;
 import springUser.model.User;
 
 import java.sql.SQLException;
@@ -15,11 +15,10 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService  {
 
-    private UserDAOImpl userHibernateDAO;
-
+    private UserDAO userHibernateDAO;
 
     @Autowired
-    public UserService(UserDAOImpl userHibernateDAO) {
+    public UserService(UserDAO userHibernateDAO) {
         this.userHibernateDAO = userHibernateDAO;
 
     }
