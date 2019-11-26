@@ -1,35 +1,29 @@
 package springUser.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import springUser.dao.UserHibernateDAO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import springUser.dao.UserDAOImpl;
 import springUser.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springUser.model.UserRole;
 
 import javax.transaction.Transactional;
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService  {
 
-    private UserHibernateDAO userHibernateDAO;
-
+    private UserDAOImpl userHibernateDAO;
 
     @Autowired
-    public UserService(UserHibernateDAO userHibernateDAO) {
+    public UserService(UserDAOImpl userHibernateDAO) {
         this.userHibernateDAO = userHibernateDAO;
     }
 
-
     @Transactional
     public void addUser(User user) throws SQLException {
+        String password = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(password);
         userHibernateDAO.addUser(user);
     }
 
@@ -45,6 +39,8 @@ public class UserService  {
 
     @Transactional
     public void updateUser(User user) {
+        String password = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(password);
         userHibernateDAO.updateUser(user);
     }
 
